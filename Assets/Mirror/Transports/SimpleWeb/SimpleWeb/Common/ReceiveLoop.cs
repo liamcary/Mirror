@@ -176,7 +176,7 @@ namespace Mirror.SimpleWeb
             // read 2
             header.offset = ReadHelper.Read(stream, buffer, header.offset, Constants.HeaderMinSize);
             // log after first blocking call
-            Log.Flood("[SWT-ReceiveLoop]: Message From {0}", conn);
+            // Log.Flood("[SWT-ReceiveLoop]: Message From {0}", conn);
 
             if (MessageProcessor.NeedToReadShortLength(buffer))
                 header.offset = ReadHelper.Read(stream, buffer, header.offset, Constants.ShortLength);
@@ -194,7 +194,7 @@ namespace Mirror.SimpleWeb
             header.payloadLength = MessageProcessor.GetPayloadLength(buffer);
             header.finished = MessageProcessor.Finished(buffer);
 
-            Log.Flood("[SWT-ReceiveLoop]: Header ln:{0} op:{1} mask:{2}", header.payloadLength, header.opcode, expectMask);
+            // Log.Flood("[SWT-ReceiveLoop]: Header ln:{0} op:{1} mask:{2}", header.payloadLength, header.opcode, expectMask);
 
             return header;
         }
@@ -206,7 +206,7 @@ namespace Mirror.SimpleWeb
             ArrayBuffer arrayBuffer = CopyMessageToBuffer(bufferPool, expectMask, buffer, msgOffset, payloadLength);
 
             // dump after mask off
-            Log.DumpBuffer("[SWT-ReceiveLoop]: Message", arrayBuffer);
+            // Log.DumpBuffer("[SWT-ReceiveLoop]: Message", arrayBuffer);
 
             queue.Enqueue(new Message(conn.connId, arrayBuffer));
         }
@@ -238,8 +238,8 @@ namespace Mirror.SimpleWeb
             }
 
             // dump after mask off
-            Log.DumpBuffer("[SWT-ReceiveLoop]: Message", buffer, msgOffset, payloadLength);
-            Log.Verbose("[SWT-ReceiveLoop]: Close: {0} message:{1}", GetCloseCode(buffer, msgOffset), GetCloseMessage(buffer, msgOffset, payloadLength));
+            // Log.DumpBuffer("[SWT-ReceiveLoop]: Message", buffer, msgOffset, payloadLength);
+            // Log.Verbose("[SWT-ReceiveLoop]: Close: {0} message:{1}", GetCloseCode(buffer, msgOffset), GetCloseMessage(buffer, msgOffset, payloadLength));
 
             conn.Dispose();
         }

@@ -144,7 +144,7 @@ namespace Mirror.SimpleWeb
             offset += msgLength;
 
             // dump before mask on
-            Log.DumpBuffer("[SWT-SendLoop]: Send", buffer, startOffset, offset);
+            // Log.DumpBuffer("[SWT-SendLoop]: Send", buffer, startOffset, offset);
 
             if (setMask)
             {
