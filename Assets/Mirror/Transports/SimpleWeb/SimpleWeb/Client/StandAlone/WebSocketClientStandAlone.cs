@@ -73,7 +73,7 @@ namespace Mirror.SimpleWeb
                     return;
                 }
 
-                Log.Info($"[SWT-WebSocketClientStandAlone]: HandShake Successful with {serverAddress}");
+                Log.Info("[SWT-WebSocketClientStandAlone]: HandShake Successful with {0}", serverAddress);
 
                 state = ClientState.Connected;
 

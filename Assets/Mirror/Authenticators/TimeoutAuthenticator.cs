@@ -57,12 +57,12 @@ namespace Mirror.Authenticators
 
         IEnumerator BeginAuthentication(NetworkConnection conn)
         {
-            //Debug.Log($"Authentication countdown started {conn} {timeout}");
+            //Debug.LogFormat("Authentication countdown started {0} {1}", conn, timeout);
             yield return new WaitForSecondsRealtime(timeout);
 
             if (!conn.isAuthenticated)
             {
-                Debug.LogError($"Authentication Timeout - Disconnecting {conn}");
+                Debug.LogErrorFormat("Authentication Timeout - Disconnecting {0}", conn);
                 conn.Disconnect();
             }
         }

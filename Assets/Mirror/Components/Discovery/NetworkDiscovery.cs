@@ -6,7 +6,7 @@ using UnityEngine.Events;
 namespace Mirror.Discovery
 {
     [Serializable]
-    public class ServerFoundUnityEvent<TResponseType> : UnityEvent<TResponseType> {};
+    public class ServerFoundUnityEvent<TResponseType> : UnityEvent<TResponseType> { };
 
     [DisallowMultipleComponent]
     [AddComponentMenu("Network/Network Discovery")]
@@ -43,7 +43,7 @@ namespace Mirror.Discovery
             }
             catch (NotImplementedException)
             {
-                Debug.LogError($"Transport {transport} does not support network discovery");
+                Debug.LogErrorFormat("Transport {0} does not support network discovery", transport);
                 throw;
             }
         }

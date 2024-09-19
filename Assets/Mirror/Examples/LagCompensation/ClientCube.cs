@@ -43,8 +43,8 @@ namespace Mirror.Examples.LagCompensationDemo
 
         // debugging ///////////////////////////////////////////////////////////
         [Header("Debug")]
-        public Color hitColor      = Color.blue;
-        public Color missedColor   = Color.magenta;
+        public Color hitColor = Color.blue;
+        public Color missedColor = Color.magenta;
         public Color originalColor = Color.black;
 
         [Header("Simulation")]
@@ -151,12 +151,12 @@ namespace Mirror.Examples.LagCompensationDemo
             // only x coordinate matters for this simple example.
             if (server.CmdClicked(transform.position))
             {
-                Debug.Log($"Click hit!");
+                Debug.Log("Click hit!");
                 FlashColor(hitColor);
             }
             else
             {
-                Debug.Log($"Click missed!");
+                Debug.Log("Click missed!");
                 FlashColor(missedColor);
             }
         }

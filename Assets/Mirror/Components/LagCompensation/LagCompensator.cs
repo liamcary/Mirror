@@ -106,7 +106,7 @@ namespace Mirror
                 sample = Capture3D.Interpolate(resultBefore, resultAfter, t);
                 return true;
             }
-            else Debug.Log($"CmdClicked: history doesn't contain {estimatedTime:F3}");
+            else Debug.LogFormat("CmdClicked: history doesn't contain {0:F3}", estimatedTime);
 
             sample = default;
             return false;

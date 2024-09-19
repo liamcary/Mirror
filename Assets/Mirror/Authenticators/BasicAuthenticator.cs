@@ -74,7 +74,7 @@ namespace Mirror.Authenticators
         /// <param name="msg">The message payload</param>
         public void OnAuthRequestMessage(NetworkConnectionToClient conn, AuthRequestMessage msg)
         {
-            //Debug.Log($"Authentication Request: {msg.authUsername} {msg.authPassword}");
+            //Debug.Log("Authentication Request: {0} {1}", msg.authUsername, msg.authPassword);
 
             if (connectionsPendingDisconnect.Contains(conn)) return;
 
@@ -173,14 +173,14 @@ namespace Mirror.Authenticators
         {
             if (msg.code == 100)
             {
-                //Debug.Log($"Authentication Response: {msg.message}");
+                //Debug.LogFormat("Authentication Response: {0}", msg.message);
 
                 // Authentication has been accepted
                 ClientAccept();
             }
             else
             {
-                Debug.LogError($"Authentication Response: {msg.message}");
+                Debug.LogErrorFormat("Authentication Response: {0}", msg.message);
 
                 // Authentication has been rejected
                 ClientReject();

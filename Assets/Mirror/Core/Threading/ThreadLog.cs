@@ -15,10 +15,10 @@ namespace Mirror
         // queue log messages from threads
         struct LogEntry
         {
-            public int     threadId;
+            public int threadId;
             public LogType type;
-            public string  message;
-            public string  stackTrace;
+            public string message;
+            public string stackTrace;
 
             public LogEntry(int threadId, LogType type, string message, string stackTrace)
             {
@@ -91,7 +91,7 @@ namespace Mirror
                     // some projects may see unexpected messages that were previously hidden,
                     // since Unity wouldn't log them without ThreadLog.cs.
                     case LogType.Log:
-                        Debug.Log($"[Thread{entry.threadId}] {entry.message}\n{entry.stackTrace}");
+                        Debug.LogFormat("[Thread{0}] {1}\n{2}", entry.threadId, entry.message, entry.stackTrace);
                         break;
                     case LogType.Warning:
                         Debug.LogWarning($"[Thread{entry.threadId}] {entry.message}\n{entry.stackTrace}");

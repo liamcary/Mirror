@@ -152,7 +152,7 @@ namespace Mirror
                 // work at runtime, it's obvious why it happens and how to fix it.
                 if (!sourceCollider.sharedMesh.isReadable)
                 {
-                    Debug.Log($"[Prediction]: MeshCollider on {sourceCollider.name} isn't readable, which may indicate that the Mesh only exists on the GPU. If {sourceCollider.name} is missing collisions, then please select the model in the Project Area, and enable Mesh->Read/Write so it's also available on the CPU!");
+                    Debug.LogFormat("[Prediction]: MeshCollider on {0} isn't readable, which may indicate that the Mesh only exists on the GPU. If {1} is missing collisions, then please select the model in the Project Area, and enable Mesh->Read/Write so it's also available on the CPU!", sourceCollider.name, sourceCollider.name);
                     // don't early return. keep trying, it may work.
                 }
 
@@ -186,7 +186,7 @@ namespace Mirror
             CharacterJoint[] sourceJoints = source.GetComponentsInChildren<CharacterJoint>();
             foreach (CharacterJoint sourceJoint in sourceJoints)
             {
-            // copy the relative transform:
+                // copy the relative transform:
                 // if joint is on root, it returns destination root.
                 // if joint is on a child, it creates and returns a child on destination.
                 GameObject target = CopyRelativeTransform(source, sourceJoint.transform, destination);

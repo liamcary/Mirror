@@ -24,7 +24,7 @@ namespace Mirror.Examples.Common
                 framesPerSecond = count;
                 startTime = Time.time;
                 count = 0;
-                if (showLog) Debug.Log($"FPS: {framesPerSecond}");
+                if (showLog) Debug.LogFormat("FPS: {0}", framesPerSecond);
             }
         }
 

@@ -57,7 +57,7 @@ namespace Mirror.Authenticators
 
         void OnAuthRequestMessage(NetworkConnectionToClient conn, AuthRequestMessage msg)
         {
-            Debug.Log($"connection {conn.connectionId} authenticated with id {msg.clientDeviceID}");
+            Debug.LogFormat("connection {0} authenticated with id {1}", conn.connectionId, msg.clientDeviceID);
 
             // Store the device id for later reference, e.g. when spawning the player
             conn.authenticationData = msg.clientDeviceID;
@@ -111,7 +111,7 @@ namespace Mirror.Authenticators
             }
 
             // send the deviceUniqueIdentifier to the server
-            NetworkClient.Send(new AuthRequestMessage { clientDeviceID = deviceUniqueIdentifier } );
+            NetworkClient.Send(new AuthRequestMessage { clientDeviceID = deviceUniqueIdentifier });
         }
 
         /// <summary>

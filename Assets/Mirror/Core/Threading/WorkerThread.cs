@@ -103,8 +103,8 @@ namespace Mirror
         // thread constructor needs callbacks.
         // always define them, and make them call actions.
         // those can be set at any time.
-        void OnInit()    => Init?.Invoke();
-        void OnTick()    => Tick?.Invoke();
+        void OnInit() => Init?.Invoke();
+        void OnTick() => Tick?.Invoke();
         void OnCleanup() => Cleanup?.Invoke();
 
         // guarded wrapper for thread code.
@@ -117,7 +117,7 @@ namespace Mirror
             {
                 // log when work begins = thread starts.
                 // very important for debugging threads.
-                Debug.Log($"{identifier}: started.");
+                Debug.LogFormat("{0}: started.", identifier);
 
                 // show this thread in Unity profiler
                 Profiler.BeginThreadProfiling("Mirror Worker Threads", $"{identifier}");
@@ -134,7 +134,7 @@ namespace Mirror
             // Thread.Interrupt() will gracefully raise a InterruptedException.
             catch (ThreadInterruptedException)
             {
-                Debug.Log($"{identifier}: interrupted. That's okay.");
+                Debug.LogFormat("{0}: interrupted. That's okay.", identifier);
             }
             // Unity domain reload will cause a ThreadAbortException.
             // for example, when saving a changed script while in play mode.
@@ -158,7 +158,7 @@ namespace Mirror
                 // log when work ends = thread terminates.
                 // very important for debugging threads.
                 // 'finally' to log no matter what (even if exceptions)
-                Debug.Log($"{identifier}: ended.");
+                Debug.LogFormat("{0}: ended.", identifier);
             }
         }
     }

@@ -109,7 +109,7 @@ namespace Mirror
                 int max = NetworkMessages.MaxMessageSize(channelId);
                 if (writer.Position > max)
                 {
-                    Debug.LogError($"NetworkConnection.Send: message of type {typeof(T)} with a size of {writer.Position} bytes is larger than the max allowed message size in one batch: {max}.\nThe message was dropped, please make it smaller.");
+                    Debug.LogErrorFormat("NetworkConnection.Send: message of type {0} with a size of {1} bytes is larger than the max allowed message size in one batch: {2}.\nThe message was dropped, please make it smaller.", typeof(T), writer.Position, max);
                     return;
                 }
 

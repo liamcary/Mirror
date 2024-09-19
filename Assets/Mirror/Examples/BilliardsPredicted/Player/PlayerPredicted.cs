@@ -80,7 +80,7 @@ namespace Mirror.Examples.BilliardsPredicted
         {
             if (!IsValidMove(force))
             {
-                Debug.Log($"Server rejected move: {force}");
+                Debug.LogFormat("Server rejected move: {0}", force);
                 return;
             }
 

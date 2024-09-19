@@ -37,7 +37,7 @@ namespace Mirror.SimpleWeb
             listener = TcpListener.Create(port);
             listener.Start();
 
-            Log.Verbose($"[SWT-WebSocketServer]: Server Started on {port}");
+            Log.Verbose("[SWT-WebSocketServer]: Server Started on {0}", port);
 
             acceptThread = new Thread(acceptLoop);
             acceptThread.IsBackground = true;
@@ -53,7 +53,7 @@ namespace Mirror.SimpleWeb
             listener?.Stop();
             acceptThread = null;
 
-            Log.Verbose($"[SWT-WebSocketServer]: Server stopped...closing all connections.");
+            Log.Verbose("[SWT-WebSocketServer]: Server stopped...closing all connections.");
 
             // make copy so that foreach doesn't break if values are removed
             Connection[] connectionsCopy = connections.Values.ToArray();
@@ -78,7 +78,7 @@ namespace Mirror.SimpleWeb
                         //      this might not be a problem as HandshakeAndReceiveLoop checks for stop
                         //      and returns/disposes before sending message to queue
                         Connection conn = new Connection(client, AfterConnectionDisposed);
-                        Log.Verbose($"[SWT-WebSocketServer]: A client connected from {conn}");
+                        Log.Verbose("[SWT-WebSocketServer]: A client connected from {0}", conn);
 
                         // handshake needs its own thread as it needs to wait for message from client
                         Thread receiveThread = new Thread(() => HandshakeAndReceiveLoop(conn));
@@ -116,7 +116,7 @@ namespace Mirror.SimpleWeb
                 success = handShake.TryHandshake(conn);
 
                 if (success)
-                    Log.Verbose($"[SWT-WebSocketServer]: Sent Handshake {conn}, false");
+                    Log.Verbose("[SWT-WebSocketServer]: Sent Handshake {0}, false", conn);
                 else
                 {
                     Log.Warn($"[SWT-WebSocketServer]: Handshake Failed {conn}");
@@ -203,7 +203,7 @@ namespace Mirror.SimpleWeb
         {
             if (connections.TryGetValue(id, out Connection conn))
             {
-                Log.Info($"[SWT-WebSocketServer]: Disconnecting connection {id}");
+                Log.Info("[SWT-WebSocketServer]: Disconnecting connection {0}", id);
                 conn.Dispose();
                 return true;
             }

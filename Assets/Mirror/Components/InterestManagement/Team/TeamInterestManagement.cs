@@ -81,7 +81,7 @@ namespace Mirror
             if (string.IsNullOrWhiteSpace(networkTeamId))
                 return;
 
-            // Debug.Log($"TeamInterestManagement.OnSpawned({identity.name}) currentTeam: {currentTeam}");
+            // Debug.LogFormat("TeamInterestManagement.OnSpawned({0}) currentTeam: {1}", identity.name, currentTeam);
             if (!teamObjects.TryGetValue(networkTeamId, out HashSet<NetworkTeam> objects))
             {
                 objects = new HashSet<NetworkTeam>();
@@ -133,7 +133,7 @@ namespace Mirror
             if (string.IsNullOrWhiteSpace(newObserverNetworkTeam.teamId))
                 return false;
 
-            //Debug.Log($"TeamInterestManagement.OnCheckObserver {identity.name} {identityNetworkTeam.teamId} | {newObserver.identity.name} {newObserverNetworkTeam.teamId}");
+            //Debug.LogFormat("TeamInterestManagement.OnCheckObserver {0} {1} | {2} {3}", identity.name, identityNetworkTeam.teamId, newObserver.identity.name, newObserverNetworkTeam.teamId);
 
             // Observed only if teamId's team
             return identityNetworkTeam.teamId == newObserverNetworkTeam.teamId;

@@ -49,10 +49,10 @@ namespace Mirror.SimpleWeb
         {
 #if UNITY_SERVER || UNITY_WEBGL
             Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"[SWT:Exception] {e.GetType().Name}: {e.Message}\n{e.StackTrace}\n\n");
+            Console.WriteLine("[SWT:Exception] {0}: {1}\n{2}\n\n", e.GetType().Name, e.Message, e.StackTrace);
             Console.ResetColor();
 #else
-            logger.Log(LogType.Exception, $"[SWT:Exception] {e.GetType().Name}: {e.Message}\n{e.StackTrace}\n\n");
+            logger.LogFormat(LogType.Exception, "[SWT:Exception] {0}: {1}\n{2}\n\n", e.GetType().Name, e.Message, e.StackTrace);
 #endif
         }
 
@@ -61,9 +61,11 @@ namespace Mirror.SimpleWeb
         /// </summary>
         /// <param name="msg">Message text to log</param>
         [Conditional("DEBUG")]
-        public static void Flood(string msg)
+        public static void Flood(string msg, params object[] args)
         {
             if (minLogLevel > Levels.Flood) return;
+
+            msg = string.Format(msg, args);
 
 #if UNITY_SERVER || UNITY_WEBGL
             Console.ForegroundColor = ConsoleColor.Gray;
@@ -120,9 +122,11 @@ namespace Mirror.SimpleWeb
         /// Logs verbose to console if minLogLevel is set to Verbose or lower
         /// </summary>
         /// <param name="msg">Message text to log</param>
-        public static void Verbose(string msg)
+        public static void Verbose(string msg, params object[] args)
         {
             if (minLogLevel > Levels.Verbose) return;
+
+            msg = string.Format(msg, args);
 
 #if DEBUG
             // Debug builds and Unity Editor
@@ -140,9 +144,11 @@ namespace Mirror.SimpleWeb
         /// </summary>
         /// <param name="msg">Message text to log</param>
         /// <param name="consoleColor">Default Cyan works in server and browser consoles</param>
-        public static void Info(string msg, ConsoleColor consoleColor = ConsoleColor.Cyan)
+        public static void Info(string msg, params object[] args)
         {
             if (minLogLevel > Levels.Info) return;
+
+            msg = string.Format(msg, args);
 
 #if DEBUG
             // Debug builds and Unity Editor

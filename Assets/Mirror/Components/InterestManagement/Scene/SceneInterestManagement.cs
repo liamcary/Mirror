@@ -22,7 +22,7 @@ namespace Mirror
         {
             Scene currentScene = identity.gameObject.scene;
             lastObjectScene[identity] = currentScene;
-            // Debug.Log($"SceneInterestManagement.OnSpawned({identity.name}) currentScene: {currentScene}");
+            // Debug.LogFormat("SceneInterestManagement.OnSpawned({0}) currentScene: {1}", identity.name, currentScene);
             if (!sceneObjects.TryGetValue(currentScene, out HashSet<NetworkIdentity> objects))
             {
                 objects = new HashSet<NetworkIdentity>();

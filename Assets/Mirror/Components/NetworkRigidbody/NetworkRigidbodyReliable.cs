@@ -22,7 +22,7 @@ namespace Mirror
             // but we can ensure that .target has a Rigidbody, and use it.
             if (target.GetComponent<Rigidbody>() == null)
             {
-                Debug.LogWarning($"{name}'s NetworkRigidbody.target {target.name} is missing a Rigidbody", this);
+                Debug.LogWarningFormat(this, "{0}'s NetworkRigidbody.target {1} is missing a Rigidbody", name, target.name);
             }
         }
 
@@ -34,7 +34,7 @@ namespace Mirror
             rb = target.GetComponent<Rigidbody>();
             if (rb == null)
             {
-                Debug.LogError($"{name}'s NetworkRigidbody.target {target.name} is missing a Rigidbody", this);
+                Debug.LogErrorFormat(this, "{0}'s NetworkRigidbody.target {1} is missing a Rigidbody", name, target.name);
                 return;
             }
             wasKinematic = rb.isKinematic;

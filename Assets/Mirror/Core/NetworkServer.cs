@@ -150,7 +150,7 @@ namespace Mirror
                         Console.WriteLine($"Server listening on port {portTransport.Port}");
                         Console.ResetColor();
 #else
-                        Debug.Log($"Server listening on port {portTransport.Port}");
+                        Debug.LogFormat("Server listening on port {0}", portTransport.Port);
 #endif
                     }
                 }

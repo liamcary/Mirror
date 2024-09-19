@@ -38,8 +38,8 @@ namespace Mirror
 
             // ensure colliders were set.
             // bounds collider should always be a trigger.
-            if (actualCollider == null)    Debug.LogError("HistoryCollider: actualCollider was not set.");
-            if (boundsCollider == null)    Debug.LogError("HistoryCollider: boundsCollider was not set.");
+            if (actualCollider == null) Debug.LogError("HistoryCollider: actualCollider was not set.");
+            if (boundsCollider == null) Debug.LogError("HistoryCollider: boundsCollider was not set.");
             if (boundsCollider.transform.parent != transform) Debug.LogError("HistoryCollider: boundsCollider must be a child of this GameObject.");
             if (!boundsCollider.isTrigger) Debug.LogError("HistoryCollider: boundsCollider must be a trigger.");
         }
@@ -81,7 +81,7 @@ namespace Mirror
             // for now, don't allow scale changes.
             if (transform.lossyScale != Vector3.one)
             {
-                Debug.LogWarning($"HistoryCollider: {name}'s transform global scale must be (1,1,1).");
+                Debug.LogWarningFormat("HistoryCollider: {0}'s transform global scale must be (1,1,1).", name);
                 return;
             }
 
@@ -91,7 +91,7 @@ namespace Mirror
 
             // project world space bounds to collider's local space
             boundsCollider.center = boundsCollider.transform.InverseTransformPoint(total.center);
-            boundsCollider.size   = total.size; // TODO projection?
+            boundsCollider.size = total.size; // TODO projection?
         }
 
         // TODO runtime drawing for debugging?

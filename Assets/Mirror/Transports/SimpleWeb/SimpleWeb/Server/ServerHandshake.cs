@@ -66,7 +66,7 @@ namespace Mirror.SimpleWeb
 
                 conn.request = new Request(msg);
                 conn.remoteAddress = conn.CalculateAddress();
-                Log.Info($"[SWT-ServerHandshake]: A client connected from {conn}");
+                Log.Info("[SWT-ServerHandshake]: A client connected from {0}", conn);
 
                 return true;
             }
@@ -90,7 +90,7 @@ namespace Mirror.SimpleWeb
                 string msg = Encoding.ASCII.GetString(readBuffer.array, 0, readCount);
                 // GET isn't in the bytes we read here, so we need to add it back
                 msg = $"GET{msg}";
-                Log.Verbose($"[SWT-ServerHandshake]: Client Handshake Message:\r\n{msg}");
+                Log.Verbose("[SWT-ServerHandshake]: Client Handshake Message:\r\n{0}", msg);
 
                 return msg;
             }
@@ -122,7 +122,7 @@ namespace Mirror.SimpleWeb
         {
             int start = msg.IndexOf(KeyHeaderString, StringComparison.InvariantCultureIgnoreCase) + KeyHeaderString.Length;
 
-            Log.Verbose($"[SWT-ServerHandshake]: Handshake Key: {msg.Substring(start, KeyLength)}");
+            Log.Verbose("[SWT-ServerHandshake]: Handshake Key: {0}", msg.Substring(start, KeyLength));
             Encoding.ASCII.GetBytes(msg, start, KeyLength, keyBuffer, 0);
         }
 
@@ -133,7 +133,10 @@ namespace Mirror.SimpleWeb
 
         byte[] CreateHash(byte[] keyBuffer)
         {
-            Log.Verbose($"[SWT-ServerHandshake]: Handshake Hashing {Encoding.ASCII.GetString(keyBuffer, 0, MergedKeyLength)}");
+            if (Log.minLogLevel <= Log.Levels.Verbose)
+            {
+                Log.Verbose("[SWT-ServerHandshake]: Handshake Hashing {0}", Encoding.ASCII.GetString(keyBuffer, 0, MergedKeyLength));
+            }
             return sha1.ComputeHash(keyBuffer, 0, MergedKeyLength);
         }
 
@@ -149,7 +152,7 @@ namespace Mirror.SimpleWeb
                 "Sec-WebSocket-Accept: {0}\r\n\r\n",
                 keyHashString);
 
-            Log.Verbose($"[SWT-ServerHandshake]: Handshake Response length {message.Length}, IsExpected {message.Length == ResponseLength}");
+            Log.Verbose("[SWT-ServerHandshake]: Handshake Response length {0}, IsExpected {1}", message.Length, message.Length == ResponseLength);
             Encoding.ASCII.GetBytes(message, 0, ResponseLength, responseBuffer, 0);
         }
     }

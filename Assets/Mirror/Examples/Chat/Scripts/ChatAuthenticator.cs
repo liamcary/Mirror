@@ -80,7 +80,7 @@ namespace Mirror.Examples.Chat
         /// <param name="msg">The message payload</param>
         public void OnAuthRequestMessage(NetworkConnectionToClient conn, AuthRequestMessage msg)
         {
-            Debug.Log($"Authentication Request: {msg.authUsername}");
+            Debug.LogFormat("Authentication Request: {0}", msg.authUsername);
 
             if (connectionsPendingDisconnect.Contains(conn)) return;
 
@@ -189,7 +189,7 @@ namespace Mirror.Examples.Chat
         {
             if (msg.code == 100)
             {
-                Debug.Log($"Authentication Response: {msg.code} {msg.message}");
+                Debug.LogFormat("Authentication Response: {0} {1}", msg.code, msg.message);
 
                 // Authentication has been accepted
                 ClientAccept();

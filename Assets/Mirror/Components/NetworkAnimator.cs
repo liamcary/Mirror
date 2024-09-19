@@ -358,7 +358,7 @@ namespace Mirror
             byte parameterCount = reader.ReadByte();
             if (parameterCount != parameters.Length)
             {
-                Debug.LogError($"NetworkAnimator: serialized parameter count={parameterCount} does not match expected parameter count={parameters.Length}. Are you changing animators at runtime?", gameObject);
+                Debug.LogErrorFormat(gameObject, "NetworkAnimator: serialized parameter count={0} does not match expected parameter count={1}. Are you changing animators at runtime?", parameterCount, parameters.Length);
                 return;
             }
 
@@ -429,7 +429,7 @@ namespace Mirror
                 byte layerCount = reader.ReadByte();
                 if (layerCount != animator.layerCount)
                 {
-                    Debug.LogError($"NetworkAnimator: serialized layer count={layerCount} does not match expected layer count={animator.layerCount}. Are you changing animators at runtime?", gameObject);
+                    Debug.LogErrorFormat(gameObject, "NetworkAnimator: serialized layer count={0} does not match expected layer count={1}. Are you changing animators at runtime?", layerCount, animator.layerCount);
                     return;
                 }
 
@@ -552,7 +552,7 @@ namespace Mirror
             if (!clientAuthority)
                 return;
 
-            //Debug.Log($"OnAnimationMessage for netId {netId}");
+            //Debug.LogFormat("OnAnimationMessage for netId {0}", netId);
 
             // handle and broadcast
             using (NetworkReaderPooled networkReader = NetworkReaderPool.Get(parameters))

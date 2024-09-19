@@ -170,7 +170,7 @@ namespace Mirror
                 }
             }
             // if we didn't find a renderer, show a warning
-            else Debug.LogWarning($"PredictedRigidbody: {name} found no renderer to copy onto the visual object. If you are using a custom setup, please overwrite PredictedRigidbody.CreateVisualCopy().");
+            else Debug.LogWarningFormat("PredictedRigidbody: {0} found no renderer to copy onto the visual object. If you are using a custom setup, please overwrite PredictedRigidbody.CreateVisualCopy().", name);
         }
 
         // instantiate a physics-only copy of the gameobject to apply corrections.
@@ -338,7 +338,7 @@ namespace Mirror
             if (sqrDistance > smoothFollowThresholdSqr)
             {
                 tf.SetPositionAndRotation(physicsPosition, physicsRotation); // faster than .position and .rotation manually
-                Debug.Log($"[PredictedRigidbody] Teleported because distance to physics copy = {distance:F2} > threshold {smoothFollowThreshold:F2}");
+                Debug.LogFormat("[PredictedRigidbody] Teleported because distance to physics copy = {0:F2} > threshold {1:F2}", distance, smoothFollowThreshold);
                 return;
             }
 
@@ -505,9 +505,9 @@ namespace Mirror
             if (isServer) UpdateServer();
             if (isClientOnly)
             {
-                 if (mode == PredictionMode.Smooth)
+                if (mode == PredictionMode.Smooth)
                     UpdateGhosting();
-                 else if (mode == PredictionMode.Fast)
+                else if (mode == PredictionMode.Fast)
                     UpdateState();
             }
         }
@@ -626,11 +626,11 @@ namespace Mirror
         }
 
         // optional user callbacks, in case people need to know about events.
-        protected virtual void OnSnappedIntoPlace() {}
-        protected virtual void OnBeforeApplyState() {}
-        protected virtual void OnCorrected() {}
-        protected virtual void OnBeginPrediction() {} // when the Rigidbody moved above threshold and we created a ghost
-        protected virtual void OnEndPrediction() {}   // when the Rigidbody came to rest and we destroyed the ghost
+        protected virtual void OnSnappedIntoPlace() { }
+        protected virtual void OnBeforeApplyState() { }
+        protected virtual void OnCorrected() { }
+        protected virtual void OnBeginPrediction() { } // when the Rigidbody moved above threshold and we created a ghost
+        protected virtual void OnEndPrediction() { }   // when the Rigidbody came to rest and we destroyed the ghost
 
         void ApplyState(double timestamp, Vector3 position, Quaternion rotation, Vector3 velocity, Vector3 angularVelocity)
         {
@@ -786,7 +786,8 @@ namespace Mirror
                 // it's expected that server states would be behind those 2-3.
                 // only show a warning if it's behind the full history limit!
                 if (stateHistory.Count >= stateHistoryLimit)
-                    Debug.LogWarning($"Hard correcting client object {name} because the client is too far behind the server. History of size={stateHistory.Count} @ t={timestamp:F3} oldest={oldest.timestamp:F3} newest={newest.timestamp:F3}. This would cause the client to be out of sync as long as it's behind.");
+                    Debug.LogWarningFormat("Hard correcting client object {0} because the client is too far behind the server. History of size={1} @ t={2:F3} oldest={3:F3} newest={4:F3}. This would cause the client to be out of sync as long as it's behind.",
+                        name, stateHistory.Count, timestamp, oldest.timestamp, newest.timestamp);
 
                 // force apply the state
                 ApplyState(state.timestamp, state.position, state.rotation, state.velocity, state.angularVelocity);
@@ -822,7 +823,8 @@ namespace Mirror
             {
                 // something went very wrong. sampling should've worked.
                 // hard correct to recover the error.
-                Debug.LogError($"Failed to sample history of size={stateHistory.Count} @ t={timestamp:F3} oldest={oldest.timestamp:F3} newest={newest.timestamp:F3}. This should never happen because the timestamp is within history.");
+                Debug.LogErrorFormat("Failed to sample history of size={0} @ t={1:F3} oldest={2:F3} newest={3:F3}. This should never happen because the timestamp is within history.",
+                    stateHistory.Count, timestamp, oldest.timestamp, newest.timestamp);
                 ApplyState(state.timestamp, state.position, state.rotation, state.velocity, state.angularVelocity);
                 return;
             }
@@ -839,7 +841,7 @@ namespace Mirror
 
             // too far off? then correct it
             if (positionToInterpolatedDistanceSqr >= positionCorrectionThresholdSqr || // fast comparison
-                //positionToInterpolatedDistance >= positionCorrectionThreshold ||     // slow comparison
+                                                                                       //positionToInterpolatedDistance >= positionCorrectionThreshold ||     // slow comparison
                 rotationToInterpolatedDistance >= rotationCorrectionThreshold)
             {
                 // Debug.Log($"CORRECTION NEEDED FOR {name} @ {timestamp:F3}: client={interpolated.position} server={state.position} difference={difference:F3}");
@@ -898,8 +900,8 @@ namespace Mirror
                 rotation,
                 predictedRigidbody.velocity,
                 predictedRigidbody.angularVelocity);//,
-                // DO NOT SYNC SLEEPING! this cuts benchmark performance in half(!!!)
-                // predictedRigidbody.IsSleeping());
+                                                    // DO NOT SYNC SLEEPING! this cuts benchmark performance in half(!!!)
+                                                    // predictedRigidbody.IsSleeping());
             writer.WritePredictedSyncData(data);
         }
 

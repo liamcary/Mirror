@@ -166,14 +166,14 @@ namespace Mirror
             if (GetComponent<NetworkIdentity>() == null &&
                 GetComponentInParent<NetworkIdentity>(true) == null)
             {
-                Debug.LogError($"{GetType()} on {name} requires a NetworkIdentity. Please add a NetworkIdentity component to {name} or it's parents.", this);
+                Debug.LogErrorFormat(this, "{0} on {1} requires a NetworkIdentity. Please add a NetworkIdentity component to {2} or it's parents.", GetType(), name, name);
             }
 #elif UNITY_2020_3_OR_NEWER // 2020 only has GetComponentsInParent(bool includeInactive = false), we can use this too
             NetworkIdentity[] parentsIds = GetComponentsInParent<NetworkIdentity>(true);
             int parentIdsCount = parentsIds != null ? parentsIds.Length : 0;
             if (GetComponent<NetworkIdentity>() == null && parentIdsCount == 0)
             {
-                Debug.LogError($"{GetType()} on {name} requires a NetworkIdentity. Please add a NetworkIdentity component to {name} or it's parents.", this);
+                Debug.LogErrorFormat(this, "{0} on {1} requires a NetworkIdentity. Please add a NetworkIdentity component to {2} or it's parents.", GetType(), name, name);
             }
 #endif
         }
@@ -339,7 +339,7 @@ namespace Mirror
             //       to avoid Wrapper functions. a lot of people requested this.
             if (!NetworkClient.active)
             {
-                Debug.LogError($"Command {functionFullName} called on {name} without an active client.", gameObject);
+                Debug.LogErrorFormat(gameObject, "Command {0} called on {1} without an active client.", functionFullName, name);
                 return;
             }
 
@@ -351,7 +351,7 @@ namespace Mirror
                 // or client may have been set NotReady intentionally, so
                 // only warn if on the reliable channel.
                 if (channelId == Channels.Reliable)
-                    Debug.LogWarning($"Command {functionFullName} called on {name} while NetworkClient is not ready.\nThis may be ignored if client intentionally set NotReady.", gameObject);
+                    Debug.LogWarningFormat(gameObject, "Command {0} called on {1} while NetworkClient is not ready.\nThis may be ignored if client intentionally set NotReady.", functionFullName, name);
                 return;
             }
 
@@ -359,7 +359,7 @@ namespace Mirror
             // other objects must have authority.
             if (!(!requiresAuthority || isLocalPlayer || isOwned))
             {
-                Debug.LogWarning($"Command {functionFullName} called on {name} without authority.", gameObject);
+                Debug.LogWarningFormat(gameObject, "Command {0} called on {1} without authority.", functionFullName, name);
                 return;
             }
 
@@ -370,13 +370,13 @@ namespace Mirror
             // => see also: https://github.com/vis2k/Mirror/issues/2629
             if (NetworkClient.connection == null)
             {
-                Debug.LogError($"Command {functionFullName} called on {name} with no client running.", gameObject);
+                Debug.LogErrorFormat(gameObject, "Command {0} called on {1} with no client running.", functionFullName, name);
                 return;
             }
 
             if (netId == 0)
             {
-                Debug.LogWarning($"Command {functionFullName} called on {name} with netId=0. Maybe it wasn't spawned yet?", gameObject);
+                Debug.LogWarningFormat(gameObject, "Command {0} called on {1} with netId=0. Maybe it wasn't spawned yet?", functionFullName, name);
                 return;
             }
 
@@ -407,14 +407,14 @@ namespace Mirror
             // this was in Weaver before
             if (!NetworkServer.active)
             {
-                Debug.LogError($"RPC Function {functionFullName} called without an active server.", gameObject);
+                Debug.LogErrorFormat(gameObject, "RPC Function {0} called without an active server.", functionFullName);
                 return;
             }
 
             // This cannot use NetworkServer.active, as that is not specific to this object.
             if (!isServer)
             {
-                Debug.LogWarning($"ClientRpc {functionFullName} called on un-spawned object: {name}", gameObject);
+                Debug.LogWarningFormat(gameObject, "ClientRpc {0} called on un-spawned object: {1}", functionFullName, name);
                 return;
             }
 
@@ -460,13 +460,13 @@ namespace Mirror
         {
             if (!NetworkServer.active)
             {
-                Debug.LogError($"TargetRPC {functionFullName} was called on {name} when server not active.", gameObject);
+                Debug.LogErrorFormat(gameObject, "TargetRPC {0} was called on {1} when server not active.", functionFullName, name);
                 return;
             }
 
             if (!isServer)
             {
-                Debug.LogWarning($"TargetRpc {functionFullName} called on {name} but that object has not been spawned or has been unspawned.", gameObject);
+                Debug.LogWarningFormat(gameObject, "TargetRpc {0} called on {1} but that object has not been spawned or has been unspawned.", functionFullName, name);
                 return;
             }
 
@@ -479,14 +479,14 @@ namespace Mirror
             // if still null
             if (conn is null)
             {
-                Debug.LogError($"TargetRPC {functionFullName} can't be sent because it was given a null connection. Make sure {name} is owned by a connection, or if you pass a connection manually then make sure it's not null. For example, TargetRpcs can be called on Player/Pet which are owned by a connection. However, they can not be called on Monsters/Npcs which don't have an owner connection.", gameObject);
+                Debug.LogErrorFormat(gameObject, "TargetRPC {0} can't be sent because it was given a null connection. Make sure {1} is owned by a connection, or if you pass a connection manually then make sure it's not null. For example, TargetRpcs can be called on Player/Pet which are owned by a connection. However, they can not be called on Monsters/Npcs which don't have an owner connection.", functionFullName, name);
                 return;
             }
 
             // TODO change conn type to NetworkConnectionToClient to begin with.
             if (!(conn is NetworkConnectionToClient connToClient))
             {
-                Debug.LogError($"TargetRPC {functionFullName} called on {name} requires a NetworkConnectionToClient but was given {conn.GetType().Name}", gameObject);
+                Debug.LogErrorFormat(gameObject, "TargetRPC {0} called on {1} requires a NetworkConnectionToClient but was given {2}", functionFullName, name, conn.GetType().Name);
                 return;
             }
 
@@ -653,7 +653,7 @@ namespace Mirror
                     newNetId = identity.netId;
                     if (newNetId == 0)
                     {
-                        Debug.LogWarning($"SetSyncVarGameObject GameObject {newGameObject} has a zero netId. Maybe it is not spawned yet?");
+                        Debug.LogWarningFormat("SetSyncVarGameObject GameObject {0} has a zero netId. Maybe it is not spawned yet?", newGameObject);
                     }
                 }
             }
@@ -676,7 +676,7 @@ namespace Mirror
                     newNetId = identity.netId;
                     if (newNetId == 0)
                     {
-                        Debug.LogWarning($"SetSyncVarGameObject GameObject {newGameObject} has a zero netId. Maybe it is not spawned yet?");
+                        Debug.LogWarningFormat("SetSyncVarGameObject GameObject {0} has a zero netId. Maybe it is not spawned yet?", newGameObject);
                     }
                 }
             }
@@ -719,7 +719,7 @@ namespace Mirror
                 newNetId = newIdentity.netId;
                 if (newNetId == 0)
                 {
-                    Debug.LogWarning($"SetSyncVarNetworkIdentity NetworkIdentity {newIdentity} has a zero netId. Maybe it is not spawned yet?");
+                    Debug.LogWarningFormat("SetSyncVarNetworkIdentity NetworkIdentity {0} has a zero netId. Maybe it is not spawned yet?", newIdentity);
                 }
             }
 
@@ -983,7 +983,7 @@ namespace Mirror
                 newNetId = newIdentity.netId;
                 if (newNetId == 0)
                 {
-                    Debug.LogWarning($"SetSyncVarNetworkIdentity NetworkIdentity {newIdentity} has a zero netId. Maybe it is not spawned yet?");
+                    Debug.LogWarningFormat("SetSyncVarNetworkIdentity NetworkIdentity {0} has a zero netId. Maybe it is not spawned yet?", newIdentity);
                 }
             }
 
@@ -1022,7 +1022,7 @@ namespace Mirror
                 newComponentIndex = newBehaviour.ComponentIndex;
                 if (newNetId == 0)
                 {
-                    Debug.LogWarning($"SetSyncVarNetworkIdentity NetworkIdentity {newBehaviour} has a zero netId. Maybe it is not spawned yet?");
+                    Debug.LogWarningFormat("SetSyncVarNetworkIdentity NetworkIdentity {0} has a zero netId. Maybe it is not spawned yet?", newBehaviour);
                 }
             }
 
@@ -1045,7 +1045,7 @@ namespace Mirror
                 componentIndex = newBehaviour.ComponentIndex;
                 if (newNetId == 0)
                 {
-                    Debug.LogWarning($"{nameof(SetSyncVarNetworkBehaviour)} NetworkIdentity {newBehaviour} has a zero netId. Maybe it is not spawned yet?");
+                    Debug.LogWarningFormat("{0} NetworkIdentity {1} has a zero netId. Maybe it is not spawned yet?", nameof(SetSyncVarNetworkBehaviour), newBehaviour);
                 }
             }
 
@@ -1077,13 +1077,14 @@ namespace Mirror
             {
                 return null;
             }
-            
+
             // ensure componentIndex is in range.
             // show explicit errors if something went wrong, instead of IndexOutOfRangeException.
             // removing components at runtime isn't allowed, yet this happened in a project so we need to check for it.
             if (syncNetBehaviour.componentIndex >= identity.NetworkBehaviours.Length)
             {
-                Debug.LogError($"[SyncVar] {typeof(T)} on {name}'s {GetType()}: can't access {identity.name} NetworkBehaviour[{syncNetBehaviour.componentIndex}] because it only has {identity.NetworkBehaviours.Length} components.\nWas a NetworkBeahviour accidentally destroyed at runtime?");
+                Debug.LogErrorFormat("[SyncVar] {0} on {1}'s {2}: can't access {3} NetworkBehaviour[{4}] because it only has {5} components.\nWas a NetworkBeahviour accidentally destroyed at runtime?",
+                    typeof(T), name, GetType(), identity.name, syncNetBehaviour.componentIndex, identity.NetworkBehaviours.Length);
                 return null;
             }
 
@@ -1265,7 +1266,7 @@ namespace Mirror
             catch (Exception e)
             {
                 // show a detailed error and let the user know what went wrong
-                Debug.LogError($"OnSerialize failed for: object={name} component={GetType()} sceneId={netIdentity.sceneId:X}\n\n{e}");
+                Debug.LogErrorFormat("OnSerialize failed for: object={0} component={1} sceneId={2:X}\n\n{3}", name, GetType(), netIdentity.sceneId, e);
             }
             int endPosition = writer.Position;
 
@@ -1316,7 +1317,7 @@ namespace Mirror
             catch (Exception e)
             {
                 // show a detailed error and let the user know what went wrong
-                Debug.LogError($"OnDeserialize failed Exception={e.GetType()} (see below) object={name} component={GetType()} netId={netId}. Possible Reasons:\n" +
+                Debug.LogErrorFormat($"OnDeserialize failed Exception={e.GetType()} (see below) object={name} component={GetType()} netId={netId}. Possible Reasons:\n" +
                                $"  * Do {GetType()}'s OnSerialize and OnDeserialize calls write the same amount of data? \n" +
                                $"  * Was there an exception in {GetType()}'s OnSerialize/OnDeserialize code?\n" +
                                $"  * Are the server and client the exact same project?\n" +
@@ -1331,7 +1332,8 @@ namespace Mirror
             if (sizeHash != safety)
             {
                 // warn the user.
-                Debug.LogWarning($"{name} (netId={netId}): {GetType()} OnDeserialize size mismatch. It read {size} bytes, which caused a size hash mismatch of {sizeHash:X2} vs. {safety:X2}. Make sure that OnSerialize and OnDeserialize write/read the same amount of data in all cases.");
+                Debug.LogWarningFormat("{0} (netId={1}): {2} OnDeserialize size mismatch. It read {3} bytes, which caused a size hash mismatch of {4:X2} vs. {5:X2}. Make sure that OnSerialize and OnDeserialize write/read the same amount of data in all cases.",
+                    name, netId, GetType(), size, sizeHash, safety);
 
                 // attempt to fix the position, so the following components
                 // don't all fail. this is very likely to work, unless the user
@@ -1355,28 +1357,28 @@ namespace Mirror
         }
 
         /// <summary>Like Start(), but only called on server and host.</summary>
-        public virtual void OnStartServer() {}
+        public virtual void OnStartServer() { }
 
         /// <summary>Stop event, only called on server and host.</summary>
-        public virtual void OnStopServer() {}
+        public virtual void OnStopServer() { }
 
         /// <summary>Like Start(), but only called on client and host.</summary>
-        public virtual void OnStartClient() {}
+        public virtual void OnStartClient() { }
 
         /// <summary>Stop event, only called on client and host.</summary>
-        public virtual void OnStopClient() {}
+        public virtual void OnStopClient() { }
 
         /// <summary>Like Start(), but only called on client and host for the local player object.</summary>
-        public virtual void OnStartLocalPlayer() {}
+        public virtual void OnStartLocalPlayer() { }
 
         /// <summary>Stop event, but only called on client and host for the local player object.</summary>
-        public virtual void OnStopLocalPlayer() {}
+        public virtual void OnStopLocalPlayer() { }
 
         /// <summary>Like Start(), but only called for objects the client has authority over.</summary>
-        public virtual void OnStartAuthority() {}
+        public virtual void OnStartAuthority() { }
 
         /// <summary>Stop event, only called for objects the client has authority over.</summary>
-        public virtual void OnStopAuthority() {}
+        public virtual void OnStopAuthority() { }
 
         // Weaver injects this into inheriting classes to return true.
         // allows runtime & tests to check if a type was weaved.

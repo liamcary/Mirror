@@ -120,7 +120,7 @@ namespace Mirror
 
         void SceneLoadedForPlayer(NetworkConnectionToClient conn, GameObject roomPlayer)
         {
-            //Debug.Log($"NetworkRoom SceneLoadedForPlayer scene: {SceneManager.GetActiveScene().path} {conn}");
+            //Debug.LogFormat("NetworkRoom SceneLoadedForPlayer scene: {0} {1}", SceneManager.GetActiveScene().path, conn);
 
             if (Utils.IsSceneActive(RoomScene))
             {
@@ -206,7 +206,7 @@ namespace Mirror
             // cannot join game in progress
             if (!Utils.IsSceneActive(RoomScene))
             {
-                Debug.Log($"Not in Room scene...disconnecting {conn}");
+                Debug.LogFormat("Not in Room scene...disconnecting {0}", conn);
                 conn.Disconnect();
                 return;
             }
@@ -267,7 +267,7 @@ namespace Mirror
         /// <param name="conn">Connection from client.</param>
         public override void OnServerReady(NetworkConnectionToClient conn)
         {
-            //Debug.Log($"NetworkRoomManager OnServerReady {conn}");
+            //Debug.LogFormat("NetworkRoomManager OnServerReady {0}", conn);
             base.OnServerReady(conn);
 
             if (conn != null && conn.identity != null)
@@ -305,7 +305,7 @@ namespace Mirror
             else
             {
                 // Late joiners not supported...should've been kicked by OnServerDisconnect
-                Debug.Log($"Not in Room scene...disconnecting {conn}");
+                Debug.LogFormat("Not in Room scene...disconnecting {0}", conn);
                 conn.Disconnect();
             }
         }
@@ -492,40 +492,40 @@ namespace Mirror
         /// <summary>
         /// This is called on the host when a host is started.
         /// </summary>
-        public virtual void OnRoomStartHost() {}
+        public virtual void OnRoomStartHost() { }
 
         /// <summary>
         /// This is called on the host when the host is stopped.
         /// </summary>
-        public virtual void OnRoomStopHost() {}
+        public virtual void OnRoomStopHost() { }
 
         /// <summary>
         /// This is called on the server when the server is started - including when a host is started.
         /// </summary>
-        public virtual void OnRoomStartServer() {}
+        public virtual void OnRoomStartServer() { }
 
         /// <summary>
         /// This is called on the server when the server is started - including when a host is stopped.
         /// </summary>
-        public virtual void OnRoomStopServer() {}
+        public virtual void OnRoomStopServer() { }
 
         /// <summary>
         /// This is called on the server when a new client connects to the server.
         /// </summary>
         /// <param name="conn">The new connection.</param>
-        public virtual void OnRoomServerConnect(NetworkConnectionToClient conn) {}
+        public virtual void OnRoomServerConnect(NetworkConnectionToClient conn) { }
 
         /// <summary>
         /// This is called on the server when a client disconnects.
         /// </summary>
         /// <param name="conn">The connection that disconnected.</param>
-        public virtual void OnRoomServerDisconnect(NetworkConnectionToClient conn) {}
+        public virtual void OnRoomServerDisconnect(NetworkConnectionToClient conn) { }
 
         /// <summary>
         /// This is called on the server when a networked scene finishes loading.
         /// </summary>
         /// <param name="sceneName">Name of the new scene.</param>
-        public virtual void OnRoomServerSceneChanged(string sceneName) {}
+        public virtual void OnRoomServerSceneChanged(string sceneName) { }
 
         /// <summary>
         /// This allows customization of the creation of the room-player object on the server.
@@ -613,7 +613,7 @@ namespace Mirror
         /// This is called on the server when CheckReadyToBegin finds that players are not ready
         /// <para>May be called multiple times while not ready players are joining</para>
         /// </summary>
-        public virtual void OnRoomServerPlayersNotReady() {}
+        public virtual void OnRoomServerPlayersNotReady() { }
 
         #endregion
 
@@ -622,37 +622,37 @@ namespace Mirror
         /// <summary>
         /// This is a hook to allow custom behaviour when the game client enters the room.
         /// </summary>
-        public virtual void OnRoomClientEnter() {}
+        public virtual void OnRoomClientEnter() { }
 
         /// <summary>
         /// This is a hook to allow custom behaviour when the game client exits the room.
         /// </summary>
-        public virtual void OnRoomClientExit() {}
+        public virtual void OnRoomClientExit() { }
 
         /// <summary>
         /// This is called on the client when it connects to server.
         /// </summary>
-        public virtual void OnRoomClientConnect() {}
+        public virtual void OnRoomClientConnect() { }
 
         /// <summary>
         /// This is called on the client when disconnected from a server.
         /// </summary>
-        public virtual void OnRoomClientDisconnect() {}
+        public virtual void OnRoomClientDisconnect() { }
 
         /// <summary>
         /// This is called on the client when a client is started.
         /// </summary>
-        public virtual void OnRoomStartClient() {}
+        public virtual void OnRoomStartClient() { }
 
         /// <summary>
         /// This is called on the client when the client stops.
         /// </summary>
-        public virtual void OnRoomStopClient() {}
+        public virtual void OnRoomStopClient() { }
 
         /// <summary>
         /// This is called on the client when the client is finished loading a new networked scene.
         /// </summary>
-        public virtual void OnRoomClientSceneChanged() {}
+        public virtual void OnRoomClientSceneChanged() { }
 
         #endregion
 

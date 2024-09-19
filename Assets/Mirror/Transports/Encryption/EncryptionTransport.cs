@@ -80,7 +80,7 @@ namespace Mirror.Transports.Encryption
 
         private void HandleInnerServerConnected(int connId, string clientRemoteAddress)
         {
-            Debug.Log($"[EncryptionTransport] New connection #{connId}");
+            Debug.LogFormat("[EncryptionTransport] New connection #{0}", connId);
             EncryptedConnection ec = null;
             ec = new EncryptedConnection(
                 _credentials,
@@ -89,7 +89,7 @@ namespace Mirror.Transports.Encryption
                 (segment, channel) => OnServerDataReceived?.Invoke(connId, segment, channel),
                 () =>
                 {
-                    Debug.Log($"[EncryptionTransport] Connection #{connId} is ready");
+                    Debug.LogFormat("[EncryptionTransport] Connection #{0} is ready", connId);
                     ServerRemoveFromPending(ec);
                     //OnServerConnected?.Invoke(connId);
                     OnServerConnectedWithAddress?.Invoke(connId, clientRemoteAddress);
